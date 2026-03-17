@@ -402,12 +402,18 @@ body{font-family:'DM Sans',sans-serif;background:var(--surface);color:var(--whit
     Skills Practice
   </div>
   <div class="sb-btm">
-    <div class="ni" onclick="toggleBot()" style="padding-left:0;margin-bottom:14px;border-left:none;" id="sbBotBtn">
+    <div class="ni" onclick="toggleBot()" style="padding-left:0;margin-bottom:10px;border-left:none;" id="sbBotBtn">
       <div style="width:32px;height:32px;border-radius:8px;background:var(--green);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="2.5" fill="white"/><path d="M3 13c0-2.76 2.24-5 5-5s5 2.24 5 5" stroke="white" stroke-width="1.5" stroke-linecap="round"/><circle cx="12.5" cy="3.5" r="1.5" fill="white" opacity=".6"/><path d="M11.5 5.5l1.5-1" stroke="white" stroke-width="1" stroke-linecap="round" opacity=".6"/></svg>
       </div>
       <div><div style="font-size:13px;font-weight:500;color:var(--white);">Pathways Mentor</div><div style="font-size:10.5px;color:rgba(255,255,255,.6);margin-top:1px;">Your development guide</div></div>
     </div>
+    <a href="https://clondon85.github.io/pathways_onboarding/" target="_blank" style="display:flex;align-items:center;gap:11px;padding:10px 0;margin-bottom:14px;text-decoration:none;border-left:none;cursor:pointer;transition:opacity .15s;opacity:.75;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=.75">
+      <div style="width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 3h12v9a1 1 0 01-1 1H3a1 1 0 01-1-1V3z" stroke="white" stroke-width="1.4"/><path d="M5 3V2h6v1" stroke="white" stroke-width="1.4" stroke-linecap="round"/><path d="M5 7h6M5 9.5h4" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg>
+      </div>
+      <div><div style="font-size:13px;font-weight:500;color:var(--white);">Pathways Onboarding</div><div style="font-size:10.5px;color:rgba(255,255,255,.6);margin-top:1px;">Revisit the intro</div></div>
+    </a>
     <div style="height:1px;background:rgba(255,255,255,.06);margin-bottom:14px;"></div>
     <div style="display:flex;align-items:center;gap:11px;">
       <div class="av">CP</div>
@@ -711,8 +717,8 @@ let journal=[
   {date:"Feb 17, 2026",tag:"Reflection",text:"Had a great 1:1 where I talked about my goals out loud for the first time. Saying them to someone else made them feel more real."},
   {date:"Feb 10, 2026",tag:"Goal update",text:"Halfway through leading the cross-team project. It's harder than expected - coordination is the real skill, not the work itself."},
 ];
-let scores={"Cultivates Innovation":3.0,"Ensures Accountability":3.5,"Drives Engagement":3.2,"Global Perspective":2.8};
-let focus=new Set(["Cultivates Innovation","Ensures Accountability","Drives Engagement","Global Perspective"]);
+let scores={"Cultivates Innovation":3.0,"Ensures Accountability":3.5,"Drives Engagement":3.2,"Global Perspective":2.8,"Attracts Top Talent":3.1};
+let focus=new Set(["Cultivates Innovation","Ensures Accountability","Drives Engagement","Global Perspective","Attracts Top Talent"]);
 const preAssessed=new Set(); // tracks which competencies have been self-assessed this session
 let ci=0;
 
@@ -872,9 +878,11 @@ function renderCompGrid(){
         <div class="cpid">${c.desc}</div>
         <div class="cpis"><div class="cpib"><div class="cpibf" style="width:${(sc/5)*100}%"></div></div><div class="cpiv">${sc.toFixed(1)}</div></div>
         <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px;">
-          <span style="font-size:11px;color:var(--green);font-weight:600;cursor:pointer;" onclick="removeFocus('${c.name}',event)">★ Focus area · tap to remove</span>
+          <span style="font-size:11px;color:var(--green);font-weight:600;">★ Focus area · click to remove</span>
           <button class="btn btn-g" style="font-size:11px;padding:5px 11px;" onclick="openAssessFor('${c.name}',event)">Update score</button>
         </div>`;
+      el.style.cursor='pointer';
+      el.onclick=(e)=>{if(!e.target.closest('.btn'))removeFocus(c.name,e);};
     } else {
       el.innerHTML=`
         <div class="cpif" style="color:${FC[c.factor]||'var(--d60)'};">${c.factor}</div>
@@ -1109,6 +1117,14 @@ function buildCompBars(){
 
 const SIMS = [
   {
+    comp: "Attracts Top Talent",
+    title: "The Candidate Who Could Go Either Way",
+    desc: "Mia is a strong senior engineer - but she's weighing three offers. You're her final interview. The technical bar is high, but so is the competition. How you show up in the next 45 minutes could be the deciding factor.",
+    est: "~15 min",
+    url: "https://clondon85.github.io/pathways_scenario/",
+    pinned: true
+  },
+  {
     comp: "Cultivates Innovation",
     title: "The Idea Nobody Asked For",
     desc: "A cross-functional team meeting. You've spotted an opportunity no one else has raised - but the room is skeptical and time is short. How do you create space for a new idea without derailing the agenda?",
@@ -1135,25 +1151,20 @@ const SIMS = [
     desc: "A product feature is ready to ship - but feedback from one regional team flags a cultural concern the core team didn't see. The launch date is tomorrow. What do you do?",
     est: "~10 min",
     url: null
-  },
-  {
-    comp: "Attracts Top Talent",
-    title: "The Candidate Who Could Go Either Way",
-    desc: "Mia is a strong senior engineer - but she's weighing three offers. You're her final interview. The technical bar is high, but so is the competition. How you show up in the next 45 minutes could be the deciding factor.",
-    est: "~15 min",
-    url: "https://clondon85.github.io/oyg-simdemo/"
   }
 ];
 
 function renderSims(){
   const el=document.getElementById('simList');
   if(!el)return;
-  const visible=SIMS.filter(s=>focus.has(s.comp));
-  if(visible.length===0){
+  const pinned=SIMS.filter(s=>s.pinned);
+  const visible=SIMS.filter(s=>!s.pinned && focus.has(s.comp));
+  const all=[...pinned,...visible];
+  if(all.length===0){
     el.innerHTML=`<div style="font-size:13.5px;color:var(--d60);padding:20px 0;">Add competencies to your focus areas to unlock scenario training tailored to your goals.</div>`;
     return;
   }
-  el.innerHTML=visible.map(s=>{
+  el.innerHTML=all.map(s=>{
     const locked=!s.url;
     return `<div class="sim-card${locked?' sim-locked':''}">
       <div>

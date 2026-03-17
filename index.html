@@ -1389,13 +1389,17 @@ async function botFetch(){
       })
     });
     const data = await res.json();
-    const text = data.content?.[0]?.text || "I'm here - tell me more.";
     msgs.removeChild(typing);
-    botHistory.push({role:'assistant', content: text});
-    botReply(text);
+    if(data.error) {
+      botReply("API error: " + data.error.message);
+    } else {
+      const text = data.content?.[0]?.text || "No response received.";
+      botHistory.push({role:'assistant', content: text});
+      botReply(text);
+    }
   } catch(e) {
     msgs.removeChild(typing);
-    botReply("Something went wrong - try refreshing and starting again.");
+    botReply("Fetch error: " + e.message);
   } finally {
     document.getElementById('botInp').disabled = false;
     document.querySelector('.bot-send').disabled = false;
